@@ -1,0 +1,12 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/backend-database-dev
+
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          mongodb:
+            core: DEBUG
