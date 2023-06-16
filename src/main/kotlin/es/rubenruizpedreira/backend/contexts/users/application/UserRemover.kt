@@ -11,6 +11,8 @@ class UserRemover @Autowired constructor(private val repository: UserRepository,
     fun execute(id: UserId) {
         val user = this.repository.find(id) ?: return
 
+        user.delete()
+
         this.repository.delete(id)
         this.eventBus.publish(user.pullDomainEvents())
     }

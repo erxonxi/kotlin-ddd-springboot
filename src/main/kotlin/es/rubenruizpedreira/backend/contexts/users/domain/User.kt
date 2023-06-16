@@ -2,6 +2,7 @@ package es.rubenruizpedreira.backend.contexts.users.domain
 
 import es.rubenruizpedreira.backend.contexts.shared.domain.Aggregate
 import es.rubenruizpedreira.backend.contexts.users.domain.events.UserCreatedEvent
+import es.rubenruizpedreira.backend.contexts.users.domain.events.UserDeletedEvent
 
 class User(
     val id: UserId,
@@ -22,6 +23,10 @@ class User(
             user.record(UserCreatedEvent(id.value, email.value, password.value))
             return user
         }
+    }
+
+    fun delete() {
+        this.record(UserDeletedEvent(id.value))
     }
 
     override fun toPrimitive(): UserPrimitive {
