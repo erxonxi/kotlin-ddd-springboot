@@ -1,7 +1,12 @@
 package es.rubenruizpedreira.backend
 
+import es.rubenruizpedreira.backend.contexts.shared.domain.EventBus
+import es.rubenruizpedreira.backend.contexts.shared.infrastructure.RabbitMqEventBus
 import es.rubenruizpedreira.backend.contexts.users.domain.UserRepository
+import es.rubenruizpedreira.backend.contexts.users.domain.events.UserCreatedEvent
 import es.rubenruizpedreira.backend.contexts.users.infrastructure.MongoUserRepository
+import org.springframework.amqp.core.Queue
+import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -29,5 +34,15 @@ class BackendConfiguration {
     @Bean
     fun userRepository(operations: MongoOperations): UserRepository {
         return MongoUserRepository(operations)
+    }
+
+    @Bean
+    fun eventBus(rabbitTemplate: RabbitTemplate): EventBus {
+        return RabbitMqEventBus(rabbitTemplate)
+    }
+
+    @Bean
+    fun queueUserCreatedDomainEvent(): Queue {
+        return Queue(UserCreatedEvent.EVENT_NAME)
     }
 }

@@ -1,6 +1,7 @@
 package es.rubenruizpedreira.backend.contexts.users.domain
 
 import es.rubenruizpedreira.backend.contexts.shared.domain.Aggregate
+import es.rubenruizpedreira.backend.contexts.users.domain.events.UserCreatedEvent
 
 class User(
     val id: UserId,
@@ -14,6 +15,12 @@ class User(
                 email = UserEmail(primitive.email),
                 password = UserPassword(primitive.password),
             )
+        }
+
+        fun create(id: UserId, email: UserEmail, password: UserPassword): User {
+            val user = User(id, email, password)
+            user.record(UserCreatedEvent(id.value, email.value, password.value))
+            return user
         }
     }
 
